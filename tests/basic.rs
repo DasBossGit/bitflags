@@ -1,4 +1,5 @@
 #![no_std]
+#![feature(const_trait_impl, const_ops)]
 
 use bitflags::bitflags;
 
@@ -72,6 +73,14 @@ bitflags! {
     }
 
     pub struct Usize: usize {
+        const A = 0b00000001;
+        const B = 0b00000010;
+        const C = 0b00000100;
+    }
+}
+
+bitflags! {
+    pub const struct I8C: i8 {
         const A = 0b00000001;
         const B = 0b00000010;
         const C = 0b00000100;

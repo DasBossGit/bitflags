@@ -465,6 +465,56 @@ macro_rules! bitflags {
 
         $($t:tt)*
     ) => {
+        $crate::bitflags! {
+            @expand {
+                $(#[$outer])*
+                ($vis) () struct $BitFlags: $T {
+                    $(
+                        $(#[$inner $($args)*])*
+                        const $Flag = $value;
+                    )*
+                }
+
+                $($t)*
+            }
+        }
+    };
+    (
+        $(#[$outer:meta])*
+        $vis:vis const struct $BitFlags:ident: $T:ty {
+            $(
+                $(#[$inner:ident $($args:tt)*])*
+                const $Flag:tt = $value:expr;
+            )*
+        }
+
+        $($t:tt)*
+    ) => {
+        $crate::bitflags! {
+            @expand {
+                $(#[$outer])*
+                ($vis) (const) struct $BitFlags: $T {
+                    $(
+                        $(#[$inner $($args)*])*
+                        const $Flag = $value;
+                    )*
+                }
+
+                $($t)*
+            }
+        }
+    };
+    (@expand {
+        $(#[$outer:meta])*
+        ($vis:vis) ($($const:tt)?) struct $BitFlags:ident: $T:ty {
+            $(
+                $(#[$inner:ident $($args:tt)*])*
+                const $Flag:tt = $value:expr;
+            )*
+        }
+
+        $($t:tt)*
+    }) => {
         // Declared in the scope of the `bitflags!` call
         // This type appears in the end-user's API
         $crate::__declare_public_bitflags! {
@@ -526,7 +576,7 @@ macro_rules! bitflags {
             }
 
             $crate::__impl_public_bitflags_ops! {
-                $BitFlags
+                $BitFlags $($const)?
             }
 
             $crate::__impl_public_bitflags_iter! {
@@ -698,7 +748,7 @@ macro_rules! __impl_bitflags {
 
             /// The bitwise or (`|`) of the bits in `self` and `other`.
             #[inline]
-            pub fn insert(&mut $self, $other: Self)
+            pub const fn insert(&mut $self, $other: Self)
                 $insert_body
 
             /// The intersection of `self` with the complement of `other` (`&!`).
@@ -706,17 +756,17 @@ macro_rules! __impl_bitflags {
             /// This method is not equivalent to `self & !other` when `other` has unknown bits set.
             /// `remove` won't truncate `other`, but the `!` operator will.
             #[inline]
-            pub fn remove(&mut $self, $other: Self)
+            pub const fn remove(&mut $self, $other: Self)
                 $remove_body
 
             /// The bitwise exclusive-or (`^`) of the bits in `self` and `other`.
             #[inline]
-            pub fn toggle(&mut $self, $other: Self)
+            pub const fn toggle(&mut $self, $other: Self)
                 $toggle_body
 
             /// Call `insert` when `value` is `true` or `remove` when `value` is `false`.
             #[inline]
-            pub fn set(&mut $self, $other: Self, $value: bool)
+            pub const fn set(&mut $self, $other: Self, $value: bool)
                 $set_body
 
             /// The bitwise and (`&`) of the bits in `self` and `other`.

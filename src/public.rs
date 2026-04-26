@@ -329,6 +329,7 @@ macro_rules! __impl_public_bitflags_ops {
     (
         $(#[$outer:meta])*
         $PublicBitFlags:ident
+        $($const:tt)?
     ) => {
 
         $(#[$outer])*
@@ -376,7 +377,7 @@ macro_rules! __impl_public_bitflags_ops {
         }
 
         $(#[$outer])*
-        impl $crate::__private::core::ops::BitOr for $PublicBitFlags {
+        impl $($const)? $crate::__private::core::ops::BitOr for $PublicBitFlags {
             type Output = Self;
 
             /// The bitwise or (`|`) of the bits in `self` and `other`.
@@ -387,7 +388,7 @@ macro_rules! __impl_public_bitflags_ops {
         }
 
         $(#[$outer])*
-        impl $crate::__private::core::ops::BitOrAssign for $PublicBitFlags {
+        impl $($const)? $crate::__private::core::ops::BitOrAssign for $PublicBitFlags {
             /// The bitwise or (`|`) of the bits in `self` and `other`.
             #[inline]
             fn bitor_assign(&mut self, other: Self) {
@@ -396,7 +397,7 @@ macro_rules! __impl_public_bitflags_ops {
         }
 
         $(#[$outer])*
-        impl $crate::__private::core::ops::BitXor for $PublicBitFlags {
+        impl $($const)? $crate::__private::core::ops::BitXor for $PublicBitFlags {
             type Output = Self;
 
             /// The bitwise exclusive-or (`^`) of the bits in `self` and `other`.
@@ -407,7 +408,7 @@ macro_rules! __impl_public_bitflags_ops {
         }
 
         $(#[$outer])*
-        impl $crate::__private::core::ops::BitXorAssign for $PublicBitFlags {
+        impl $($const)? $crate::__private::core::ops::BitXorAssign for $PublicBitFlags {
             /// The bitwise exclusive-or (`^`) of the bits in `self` and `other`.
             #[inline]
             fn bitxor_assign(&mut self, other: Self) {
@@ -416,7 +417,7 @@ macro_rules! __impl_public_bitflags_ops {
         }
 
         $(#[$outer])*
-        impl $crate::__private::core::ops::BitAnd for $PublicBitFlags {
+        impl $($const)? $crate::__private::core::ops::BitAnd for $PublicBitFlags {
             type Output = Self;
 
             /// The bitwise and (`&`) of the bits in `self` and `other`.
@@ -427,7 +428,7 @@ macro_rules! __impl_public_bitflags_ops {
         }
 
         $(#[$outer])*
-        impl $crate::__private::core::ops::BitAndAssign for $PublicBitFlags {
+        impl $($const)? $crate::__private::core::ops::BitAndAssign for $PublicBitFlags {
             /// The bitwise and (`&`) of the bits in `self` and `other`.
             #[inline]
             fn bitand_assign(&mut self, other: Self) {
@@ -436,7 +437,7 @@ macro_rules! __impl_public_bitflags_ops {
         }
 
         $(#[$outer])*
-        impl $crate::__private::core::ops::Sub for $PublicBitFlags {
+        impl $($const)? $crate::__private::core::ops::Sub for $PublicBitFlags {
             type Output = Self;
 
             /// The intersection of `self` with the complement of `other` (`&!`).
@@ -450,7 +451,7 @@ macro_rules! __impl_public_bitflags_ops {
         }
 
         $(#[$outer])*
-        impl $crate::__private::core::ops::SubAssign for $PublicBitFlags {
+        impl $($const)? $crate::__private::core::ops::SubAssign for $PublicBitFlags {
             /// The intersection of `self` with the complement of `other` (`&!`).
             ///
             /// This method is not equivalent to `self & !other` when `other` has unknown bits set.
@@ -462,7 +463,7 @@ macro_rules! __impl_public_bitflags_ops {
         }
 
         $(#[$outer])*
-        impl $crate::__private::core::ops::Not for $PublicBitFlags {
+        impl $($const)? $crate::__private::core::ops::Not for $PublicBitFlags {
             type Output = Self;
 
             /// The bitwise negation (`!`) of the bits in `self`, truncating the result.
